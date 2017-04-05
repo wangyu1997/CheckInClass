@@ -94,6 +94,10 @@ public class AcademySelectActivity extends AppCompatActivity {
                     public void onNext(AcademysEntity academyListModel) {
                         if (!academyListModel.isError()) {
                             initSchoolList(academyListModel.getData());
+                        } else {
+                            Toast.makeText(AcademySelectActivity.this, "Error"
+                                    + academyListModel.getMsg(), Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 });

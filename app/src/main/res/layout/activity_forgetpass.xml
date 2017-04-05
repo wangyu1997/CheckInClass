@@ -81,7 +81,7 @@
                     android:theme="@style/MyEditText" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/btn_send"
                     style="@style/Widget.AppCompat.Button.Small"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
@@ -89,7 +89,7 @@
                     android:background="@color/transprant"
                     android:text="@string/send"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
             </LinearLayout>
 
             <EditText
@@ -119,14 +119,14 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_change"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_below="@id/text_layout"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_selector"
-            android:text="@string/ok" />
+            android:text="@string/ok"/>
     </RelativeLayout>
 
     <ImageView

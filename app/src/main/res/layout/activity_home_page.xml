@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg"
-    android:fitsSystemWindows="true"
-    tools:context=".PersonActivity">
+                xmlns:fab="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/home"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg"
+                android:fitsSystemWindows="true"
+                tools:context=".PersonActivity">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/id_swipe_ly"
@@ -18,7 +18,7 @@
             android:id="@+id/course_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/transprant" />
+            android:background="@color/transprant"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:src="@mipmap/gengduo"/>
             </LinearLayout>
 
             <LinearLayout
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:src="@mipmap/qiandao"/>
             </LinearLayout>
 
             <LinearLayout
@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:src="@mipmap/yonghu"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
@@ -89,20 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_above="@id/tabview"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="80dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/fab_selector"
-        fab:fab_type="normal" />
 
 </RelativeLayout>

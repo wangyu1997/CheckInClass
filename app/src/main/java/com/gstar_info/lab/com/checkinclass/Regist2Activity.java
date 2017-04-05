@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 import com.gstar_info.lab.com.checkinclass.Api.API;
 import com.gstar_info.lab.com.checkinclass.model.LoginEntity;
+import com.gstar_info.lab.com.checkinclass.model.ObjEntity;
 import com.gstar_info.lab.com.checkinclass.model.RegistVerEntity;
-import com.gstar_info.lab.com.checkinclass.model.RegisterEntity;
 import com.gstar_info.lab.com.checkinclass.model.StringEntity;
 import com.gstar_info.lab.com.checkinclass.utils.AppManager;
 import com.gstar_info.lab.com.checkinclass.utils.HttpControl;
@@ -124,9 +124,22 @@ public class Regist2Activity extends AppCompatActivity {
 
         final String deviceId = MyApplication.getDeviceId();
 
+//        Log.d(TAG, "regist: " +
+//                mRegistVerEntity.getUsername() +
+//                "\n" +
+//                mRegistVerEntity.getPassword() +
+//                "\n" +
+//                mRegistVerEntity.getMid()
+//                + "\n" +
+//                mRegistVerEntity.getSex()
+//                + "\n" +
+//                deviceId +
+//                "\n" +
+//                mRegistVerEntity.getClassinfo());
         api.studentRegister(mRegistVerEntity.getUsername(),
                 mRegistVerEntity.getPassword(),
                 mRegistVerEntity.getMid(),
+                mRegistVerEntity.getEmail(),
                 mRegistVerEntity.getName(),
                 mRegistVerEntity.getSex(),
                 deviceId,
@@ -134,7 +147,7 @@ public class Regist2Activity extends AppCompatActivity {
                 .subscribeOn(io())
                 .unsubscribeOn(io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<RegisterEntity>() {
+                .subscribe(new Subscriber<ObjEntity>() {
                     @Override
                     public void onCompleted() {
 
@@ -148,10 +161,10 @@ public class Regist2Activity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(RegisterEntity registerEntity) {
+                    public void onNext(ObjEntity registerEntity) {
                         if (registerEntity.isError()) {
                             Toast.makeText(Regist2Activity.this,
-                                    "注册失败", Toast.LENGTH_SHORT).show();
+                                    "注册失败"+registerEntity.getMsg(), Toast.LENGTH_SHORT).show();
                             mProgressBar.setVisibility(View.GONE);
                         } else {
                             Toast.makeText(Regist2Activity.this,
@@ -248,7 +261,7 @@ public class Regist2Activity extends AppCompatActivity {
                     @Override
                     public void onNext(StringEntity stringEntity) {
                         if (stringEntity.isError()) {
-                            Toast.makeText(Regist2Activity.this, "发送验证码失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Regist2Activity.this, "发送验证码失败"+stringEntity.getMsg(), Toast.LENGTH_SHORT).show();
                         } else {
                             rawcode = stringEntity.getData();
                             Toast.makeText(Regist2Activity.this, "验证码发送成功，请回邮箱查看", Toast.LENGTH_SHORT).show();

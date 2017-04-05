@@ -62,7 +62,7 @@ public class UserInsertHelper {
             userInfoBean.setUid(sharedPreferences.getString(UID, null));
             userInfoBean.setName(sharedPreferences.getString(NAME, null));
             userInfoBean.setSex(sharedPreferences.getString(SEX, null));
-            userInfoBean.setA_name(sharedPreferences.getString(AID, null));
+            userInfoBean.setAid(sharedPreferences.getString(AID, null));
             userInfoBean.setMid(sharedPreferences.getString(USERNAME, null));
             userInfoBean.setA_name(sharedPreferences.getString(A_NAME, null));
             userInfoBean.setMid(sharedPreferences.getString(MID, null));

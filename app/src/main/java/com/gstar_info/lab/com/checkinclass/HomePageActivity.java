@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -57,8 +56,7 @@ public class HomePageActivity extends AppCompatActivity {
     RelativeLayout tabview;
     @BindView(R.id.progressBar4)
     ProgressBar progressBar;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
+
     private ListCourseItemAdapter adapter;
     private RecyclerView.LayoutManager manager;
     private int aid;
@@ -66,6 +64,8 @@ public class HomePageActivity extends AppCompatActivity {
     private Intent data;
     public static final int Academy_res = 600;
     public final int Academy_req = 613;
+    public static final int Major_res = 0x005;
+    public final int Major_req = 0x006;
     private FootTextInterFace interFace;
     private List<courseShowEntity.DataBean> datas;
 
@@ -129,13 +129,11 @@ public class HomePageActivity extends AppCompatActivity {
                 RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) tabview.getLayoutParams();
                 int fabBottomMargin = lp.bottomMargin;
                 tabview.animate().translationY(tabview.getHeight() + fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
-                fab.hide();
             }
 
             @Override
             public void onShow() {
                 tabview.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-                fab.show();
             }
         });
     }
@@ -205,8 +203,4 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.fab)
-    public void onViewClicked() {
-        Toast.makeText(this, "添加课程", Toast.LENGTH_SHORT).show();
-    }
 }

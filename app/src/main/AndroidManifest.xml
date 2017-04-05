@@ -21,6 +21,10 @@
         <activity android:name=".upHeaderActivity"/>
         <activity android:name=".Regist1Activity"/>
         <activity android:name=".Regist2Activity"/>
+        <activity android:name=".AcademySelectActivity"/>
+        <activity android:name=".MajorSelectActivity"/>
+        <activity android:name=".ForgetPassActivity"/>
+
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -28,12 +32,24 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".AcademySelectActivity">
+
+        <activity
+            android:name=".HomePageActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme">
+
         </activity>
-        <activity android:name=".MajorSelectActivity"/>
-        <activity android:name=".ForgetPassActivity">
+        <activity
+            android:name=".InfoActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme">
+
         </activity>
-        <activity android:name=".HomePageActivity">
+
+        <activity
+            android:name=".PersonActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme">
 
         </activity>
     </application>

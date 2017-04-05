@@ -81,12 +81,12 @@ public class ListMajorGroupItemAdapter extends BaseAdapter {
                     Intent intent = new Intent(context, HomePageActivity.class);
                     intent.putExtra("major_id", major_id);
                     intent.putExtra("major_name", major_name);
-                    context.setResult(HomePageActivity.Academy_res, intent);
+                    context.setResult(HomePageActivity.Major_res, intent);
                 } else {
                     Intent intent = new Intent(context, Regist1Activity.class);
                     intent.putExtra("major_id", major_id);
                     intent.putExtra("major_name", major_name);
-                    context.setResult(Regist1Activity.academy_res, intent);
+                    context.setResult(Regist1Activity.major_res, intent);
                 }
 
                 context.finish();

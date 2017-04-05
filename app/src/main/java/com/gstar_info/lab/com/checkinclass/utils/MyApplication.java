@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.qiniu.android.storage.Configuration;
 import com.gstar_info.lab.com.checkinclass.utils.cache.SetCookieCache;
 import com.gstar_info.lab.com.checkinclass.utils.persistence.SharedPrefsCookiePersistor;
@@ -28,6 +29,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Fresco.initialize(this);
         sContext = getApplicationContext();
         Configuration config = new Configuration.Builder()
                 .chunkSize(256 * 1024)  //分片上传时，每片的大小。 默认256K

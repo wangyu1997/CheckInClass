@@ -85,11 +85,10 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
             intent.putExtra("aid", bean.getAid());
             intent.putExtra("aname", bean.getA_name());
+            startActivity(intent);
             finish();
         }
     }
-
-
 
 
     private void login() {
@@ -99,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
         final String passwd = mEditPasswd.getText().toString();
         final String deviceId = MyApplication.getDeviceId();
 
+        Log.d(TAG, "login: " + username + "|" + passwd + "|" + deviceId);
         API API = HttpControl.getInstance()
                 .getRetrofit()
                 .create(API.class);

@@ -13,6 +13,7 @@ public class StudentInfoBean {
     private String m_name;
     private String name;
     private String sex;
+    private String header;
     private String classX;
     private String createTime;
 
@@ -32,6 +33,15 @@ public class StudentInfoBean {
         classX = dataBean.getClassX();
         createTime = dataBean.getCreateTime();
 
+    }
+
+
+    public String getHeader() {
+        return header;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
     }
 
     public String getUid() {

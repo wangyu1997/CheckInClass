@@ -99,7 +99,8 @@ public class Regist1Activity extends AppCompatActivity {
     private void init() {
         mSharedPreferences = this.getSharedPreferences("aid_sp", MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
-
+        mEditor.clear();
+        mEditor.commit();
         mRegistVerEntity = new RegistVerEntity();
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +110,9 @@ public class Regist1Activity extends AppCompatActivity {
         });
         selectSex(1);
         mEditClass.setKeyListener(null);
-        mEditAcademy.setText(null);
+        mEditAcademy.setKeyListener(null);
+        mEditMajor.setKeyListener(null);
+        mEditAcademy.setText("");
         mEditAcademy.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -124,7 +127,7 @@ public class Regist1Activity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (mEditMajor.getText() != null) {
-                    mEditMajor.setText(null);
+                    mEditMajor.setText("");
                 }
             }
         });
@@ -154,14 +157,16 @@ public class Regist1Activity extends AppCompatActivity {
                 break;
             case R.id.edit_major:
                 int academyid = mSharedPreferences.getInt("academy_id", -1);
-                if (academyid != -1) {
+                if (academyid == -1 || mEditAcademy.getText().equals("")) {
+                    Toast.makeText(Regist1Activity.this, "请先选择专业!", Toast.LENGTH_SHORT)
+                            .show();
+
+                } else {
                     Intent intent = new Intent(this, MajorSelectActivity.class);
                     intent.putExtra("academy_id", academyid);
                     Log.d(TAG, "onViewClicked: " + academyid);
                     startActivityForResult(intent, major_req);
-                } else {
-                    Toast.makeText(Regist1Activity.this, "请先选择专业!", Toast.LENGTH_SHORT)
-                            .show();
+
                 }
                 break;
             case R.id.edit_class:
@@ -209,6 +214,7 @@ public class Regist1Activity extends AppCompatActivity {
                     if (classinfo != null) {
                         class_popUp.dismiss();
                         mEditClass.setText(classinfo);
+                        mRegistVerEntity.setClassinfo(classinfo);
                     }
                     break;
 

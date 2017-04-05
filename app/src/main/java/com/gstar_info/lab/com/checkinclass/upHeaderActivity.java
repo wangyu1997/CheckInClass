@@ -23,17 +23,25 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
+import com.gstar_info.lab.com.checkinclass.Api.API;
 import com.gstar_info.lab.com.checkinclass.clip.ClipHeaderActivity;
+import com.gstar_info.lab.com.checkinclass.model.ArrayEntity;
+import com.gstar_info.lab.com.checkinclass.model.LoginEntity;
+import com.gstar_info.lab.com.checkinclass.model.StudentInfoBean;
 import com.gstar_info.lab.com.checkinclass.utils.AppManager;
 import com.gstar_info.lab.com.checkinclass.utils.BitmapUtil;
+import com.gstar_info.lab.com.checkinclass.utils.HttpControl;
 import com.gstar_info.lab.com.checkinclass.utils.HttpUtil;
 import com.gstar_info.lab.com.checkinclass.utils.ImageFilter;
+import com.gstar_info.lab.com.checkinclass.utils.MyApplication;
+import com.gstar_info.lab.com.checkinclass.utils.UserInsertHelper;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
@@ -46,6 +54,12 @@ import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import retrofit2.Retrofit;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+
+import static rx.schedulers.Schedulers.io;
 
 /**
  * Created by FJS0420 on 2016/7/20.
@@ -72,11 +86,14 @@ public class upHeaderActivity extends AppCompatActivity {
     ProgressBar updateBaseInfoProgress;
     @BindView(R.id.header_main)
     RelativeLayout headerMain;
+    @BindView(R.id.button2)
+    Button button2;
     private int HEADER_FALG = 107;
 
 
     private File tempFile;
     private Uri headerUri;
+    private String headUrl;
 
     ImageView iv_head_icon;
 
@@ -114,7 +131,7 @@ public class upHeaderActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                MyApplication.restartApp();
             }
         });
 
@@ -251,11 +268,9 @@ public class upHeaderActivity extends AppCompatActivity {
     }
 
     public void updateBaseInfo() {
-        if (headerUri != null) {
-            updateHeader(headerUri);
-        } else {
-            updateHttp();
-        }
+        Toast.makeText(upHeaderActivity.this, "正在上传头像，请稍后...", Toast.LENGTH_SHORT).show();
+        updateBaseInfoProgress.setVisibility(View.VISIBLE);
+        updateHeader(headerUri);
     }
 
 
@@ -280,7 +295,6 @@ public class upHeaderActivity extends AppCompatActivity {
                                             Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res.get("key"));
                                             //上传后返回url
                                             String url = "http://onqif3xou.bkt.clouddn.com/" + res.get("key");
-//                                        userInfo.setFace_img(url);
                                             Message message;
                                             message = handler.obtainMessage();
                                             message.obj = url;
@@ -296,6 +310,7 @@ public class upHeaderActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 Toast.makeText(upHeaderActivity.this, "头像上传失败", Toast.LENGTH_SHORT).show();
+                                updateBaseInfoProgress.setVisibility(View.GONE);
                             }
                         });
                     }
@@ -304,6 +319,7 @@ public class upHeaderActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(upHeaderActivity.this, "头像上传失败", Toast.LENGTH_SHORT).show();
+                            updateBaseInfoProgress.setVisibility(View.GONE);
                         }
                     });
                     e.printStackTrace();
@@ -317,7 +333,8 @@ public class upHeaderActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == HEADER_FALG) {
-                updateHttp();
+                headUrl = (String) msg.obj;
+                upHead(headUrl);
             }
         }
     };
@@ -352,39 +369,47 @@ public class upHeaderActivity extends AppCompatActivity {
         return data;
     }
 
-    //更新个人信息
-    public void updateHttp() {
-//        if (userInfo.rightFlag()) {
-//            Retrofit retrofit = HttpControl.getInstance().getRetrofit();
-//            UserinfoService userinfoService = retrofit.create(UserinfoService.class);
-//            userinfoService.updateBaseInfo(userInfo.getName(), userInfo.getGrade(), userInfo.getSignature(), userInfo.getSex(), userInfo.getFace_img(), userInfo.getSchool_id(), userInfo.getAcademy_id())
-//                    .subscribeOn(Schedulers.io())
-//                    .unsubscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new Subscriber<RegisterEntity>() {
-//                        @Override
-//                        public void onCompleted() {
-//                            Toast.makeText(MakeupinfoActivity.this, "信息更新成功,请重新登录", Toast.LENGTH_SHORT).show();
-//                            updateBaseInfoProgress.setVisibility(View.GONE);
-//                            MyApplication.restartApp();
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable e) {
-//                            Toast.makeText(MakeupinfoActivity.this, "更新信息失败", Toast.LENGTH_SHORT).show();
-//                            updateBaseInfoProgress.setVisibility(View.GONE);
-//                        }
-//
-//                        @Override
-//                        public void onNext(RegisterEntity registerEntity) {
-//                            if (registerEntity.getStatus() != 1) {
-//                                onError(new Exception());
-//                            }
-//                        }
-//                    });
-//        } else {
-//            updateBaseInfoProgress.setVisibility(View.GONE);
-//        }
+    public void upHead(String head) {
+        Retrofit retrofit = HttpControl.getInstance().getRetrofit();
+        API api = retrofit.create(API.class);
+        api.upHeader(head)
+                .subscribeOn(io())
+                .unsubscribeOn(io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ArrayEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        updateBaseInfoProgress.setVisibility(View.GONE);
+                        Toast.makeText(upHeaderActivity.this, "上传头像成功，正在跳转至首页...", Toast.LENGTH_SHORT).show();
+                        MyApplication.restartApp();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(upHeaderActivity.this, "上传头像失败", Toast.LENGTH_SHORT).show();
+                        updateBaseInfoProgress.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onNext(ArrayEntity arrayEntity) {
+                        if (arrayEntity.isError()) {
+                            Toast.makeText(upHeaderActivity.this, "上传头像失败:" + arrayEntity.getMsg(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            StudentInfoBean dataBean = UserInsertHelper.getUserInfo(upHeaderActivity.this);
+                            dataBean.setHeader(headUrl);
+                            UserInsertHelper.updateUser(upHeaderActivity.this, dataBean);
+                        }
+                    }
+                });
     }
 
+
+    @OnClick(R.id.button2)
+    public void onClick() {
+        if (headerUri != null) {
+            updateBaseInfo();
+        } else {
+            Toast.makeText(upHeaderActivity.this, "请先上传头像...", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

@@ -57,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:src="@mipmap/gengduo" />
             </LinearLayout>
 
             <LinearLayout
@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:src="@mipmap/qiandao" />
             </LinearLayout>
 
             <LinearLayout
@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:src="@mipmap/yonghu" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

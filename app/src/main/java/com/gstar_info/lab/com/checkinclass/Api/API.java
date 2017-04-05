@@ -1,9 +1,10 @@
 package com.gstar_info.lab.com.checkinclass.Api;
 
 import com.gstar_info.lab.com.checkinclass.model.AcademysEntity;
+import com.gstar_info.lab.com.checkinclass.model.ArrayEntity;
 import com.gstar_info.lab.com.checkinclass.model.LoginEntity;
 import com.gstar_info.lab.com.checkinclass.model.MajorEntity;
-import com.gstar_info.lab.com.checkinclass.model.RegisterEntity;
+import com.gstar_info.lab.com.checkinclass.model.ObjEntity;
 import com.gstar_info.lab.com.checkinclass.model.StringEntity;
 import com.gstar_info.lab.com.checkinclass.model.courseShowEntity;
 
@@ -11,7 +12,6 @@ import com.gstar_info.lab.com.checkinclass.model.courseShowEntity;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -32,20 +32,22 @@ public interface API {
     //学生注册接口
 
     @FormUrlEncoded
-    @POST("student/register.php")
-    Observable<RegisterEntity> studentRegister(@Field("username")
+    @POST("student/regist.php")
+    Observable<ObjEntity> studentRegister(@Field("username")
                                                        String username,
-                                               @Field("password")
+                                          @Field("password")
                                                        String password,
-                                               @Field("mid")
+                                          @Field("mid")
                                                        int mid,
-                                               @Field("name")
+                                          @Field("email")
+                                                       String email,
+                                          @Field("name")
                                                        String name,
-                                               @Field("sex")
+                                          @Field("sex")
                                                        int sex,
-                                               @Field("device")
+                                          @Field("device")
                                                        String device,
-                                               @Field("class")
+                                          @Field("class")
                                                        String classX
     );
 
@@ -75,10 +77,20 @@ public interface API {
     @POST("public/sendMail.php")
     Observable<StringEntity> getcode(@Field("action") String acton, @Field("email") String email);
 
-    //注册 请求验证码接口
+    //重置密码 请求验证码接口
     @FormUrlEncoded
     @POST("public/sendMail.php")
     Observable<StringEntity> resetPass(@Field("action") String acton, @Field("email") String email, @Field("flag") String flag);
+
+    //上传头像
+    @FormUrlEncoded
+    @POST("student/upHeader.php")
+    Observable<ArrayEntity> upHeader(@Field("head") String headUrl);
+
+    //忘记密码
+    @FormUrlEncoded
+    @POST("teacher/forgetPass.php")
+    Observable<ArrayEntity> forgetPass(@Field("email") String email, @Field("password") String password);
 
 
     //首页课程

@@ -95,19 +95,25 @@ public class MajorSelectActivity extends AppCompatActivity {
                     .subscribe(new Subscriber<MajorEntity>() {
                         @Override
                         public void onCompleted() {
-                            Toast.makeText(MajorSelectActivity.this, "请求成功!", Toast.LENGTH_SHORT).show();
 
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            Toast.makeText(MajorSelectActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MajorSelectActivity.this, "Error", Toast.LENGTH_SHORT)
+                                    .show();
                         }
 
                         @Override
                         public void onNext(MajorEntity majorEntity) {
+
                             if (!majorEntity.isError()) {
+
                                 initSchoolList(majorEntity.getData());
+                            }else{
+                                Toast.makeText(MajorSelectActivity.this,"Error"+majorEntity.getMsg(),
+                                        Toast.LENGTH_SHORT)
+                                        .show();
                             }
                         }
                     });
