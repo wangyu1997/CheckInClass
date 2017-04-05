@@ -1,15 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/regist1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg"
-                android:fitsSystemWindows="true"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="25dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/regist1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:fitsSystemWindows="true"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -32,7 +32,7 @@
             android:fontFamily="sans-serif"
             android:text="@string/regist_tool"
             android:textColor="@color/white"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -62,7 +62,7 @@
                 android:inputType="text"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:theme="@style/MyEditText"/>
+                android:theme="@style/MyEditText" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                     android:inputType="text"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
-                    android:theme="@style/MyEditText"/>
+                    android:theme="@style/MyEditText" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -96,7 +96,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/sex"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -108,7 +108,7 @@
                             android:id="@+id/im_male"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@mipmap/malehide"/>
+                            android:src="@mipmap/malehide" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -121,47 +121,69 @@
                             android:id="@+id/im_female"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@mipmap/femalehide"/>
+                            android:src="@mipmap/femalehide" />
                     </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/edit_academy"
-                android:editable="false"
+            <TextView
+                android:id="@+id/text_academy"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="5dp"
-                android:hint="@string/academy"
-                android:inputType="text"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/academy"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:theme="@style/MyEditText"/>
+                android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/edit_major"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="1dp"
                 android:layout_marginBottom="5dp"
-                android:editable="false"
-                android:hint="@string/major"
-                android:inputType="text"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:theme="@style/MyEditText"/>
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/app_primary"></View>
 
-            <EditText
-                android:id="@+id/edit_class"
+            <TextView
+                android:id="@+id/text_major"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="5dp"
-                android:hint="@string/classX"
-                android:inputType="text"
-                android:editable="false"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/major"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:theme="@style/MyEditText"/>
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/app_primary"></View>
+
+            <TextView
+                android:id="@+id/text_class"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/classX"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/app_primary"></View>
+
         </LinearLayout>
 
         <Button
@@ -172,7 +194,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_selector"
-            android:text="@string/next"/>
+            android:text="@string/next" />
     </RelativeLayout>
 
     <ImageView
@@ -181,5 +203,5 @@
         android:layout_height="164dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/logo"/>
+        app:srcCompat="@drawable/logo" />
 </RelativeLayout>

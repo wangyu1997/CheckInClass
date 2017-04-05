@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gstar_info.lab.com.checkinclass.PopUpWindow.Class_PopUp;
@@ -28,7 +29,6 @@ import com.gstar_info.lab.com.checkinclass.utils.AppManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.finalteam.toolsfinal.logger.LogTool;
 
 
 /**
@@ -49,14 +49,14 @@ public class Regist1Activity extends AppCompatActivity {
     ImageView mImMale;
     @BindView(R.id.im_female)
     ImageView mImFemale;
-    @BindView(R.id.edit_academy)
-    EditText mEditAcademy;
-    @BindView(R.id.edit_major)
-    EditText mEditMajor;
-    @BindView(R.id.edit_class)
-    EditText mEditClass;
     @BindView(R.id.btn_next)
     Button mBtnNext;
+    @BindView(R.id.text_academy)
+    TextView textAcademy;
+    @BindView(R.id.text_major)
+    TextView textMajor;
+    @BindView(R.id.text_class)
+    TextView textClass;
     private RegistVerEntity mRegistVerEntity;
     private Class_PopUp class_popUp;
     private static final int academy_req = 581;
@@ -66,12 +66,8 @@ public class Regist1Activity extends AppCompatActivity {
     public String academy_name;
     public String major_name;
     public String classinfo;
-    public int academy_id;
-    public int major_id;
-    public String sexStr;
-    public int sex;//男1 女2
-    SharedPreferences mSharedPreferences;
-    SharedPreferences.Editor mEditor;
+    public int academy_id = -1;
+    public int major_id = -1;
 
 
     @Override
@@ -97,10 +93,6 @@ public class Regist1Activity extends AppCompatActivity {
     }
 
     private void init() {
-        mSharedPreferences = this.getSharedPreferences("aid_sp", MODE_PRIVATE);
-        mEditor = mSharedPreferences.edit();
-        mEditor.clear();
-        mEditor.commit();
         mRegistVerEntity = new RegistVerEntity();
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,11 +101,7 @@ public class Regist1Activity extends AppCompatActivity {
             }
         });
         selectSex(1);
-        mEditClass.setKeyListener(null);
-        mEditAcademy.setKeyListener(null);
-        mEditMajor.setKeyListener(null);
-        mEditAcademy.setText("");
-        mEditAcademy.addTextChangedListener(new TextWatcher() {
+        textAcademy.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -126,8 +114,9 @@ public class Regist1Activity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mEditMajor.getText() != null) {
-                    mEditMajor.setText("");
+                if (textMajor.getText() != null) {
+                    textMajor.setText("专业");
+                    major_id = -1;
                 }
             }
         });
@@ -147,38 +136,35 @@ public class Regist1Activity extends AppCompatActivity {
         }
     }
 
-
-    @OnClick({R.id.edit_academy, R.id.edit_major, R.id.edit_class, R.id.btn_next})
+    @OnClick({R.id.text_academy, R.id.text_major, R.id.text_class, R.id.btn_next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.edit_academy:
+            case R.id.text_academy:
                 startActivityForResult(new Intent(this, AcademySelectActivity.class),
                         academy_req);
                 break;
-            case R.id.edit_major:
-                int academyid = mSharedPreferences.getInt("academy_id", -1);
-                if (academyid == -1 || mEditAcademy.getText().equals("")) {
-                    Toast.makeText(Regist1Activity.this, "请先选择专业!", Toast.LENGTH_SHORT)
+            case R.id.text_major:
+                if (academy_id == -1 || textAcademy.getText().equals("")) {
+                    Toast.makeText(Regist1Activity.this, "请先选择学院!", Toast.LENGTH_SHORT)
                             .show();
 
                 } else {
                     Intent intent = new Intent(this, MajorSelectActivity.class);
-                    intent.putExtra("academy_id", academyid);
-                    Log.d(TAG, "onViewClicked: " + academyid);
+                    intent.putExtra("academy_id", academy_id);
                     startActivityForResult(intent, major_req);
-
                 }
                 break;
-            case R.id.edit_class:
+            case R.id.text_class:
                 class_popUp = new Class_PopUp(this, new PopClick(), new valueChangeListener());
                 classinfo = Class_PopUp.data[Class_PopUp.DEFAULT_VALUE];
                 class_popUp.showAtLocation(this.findViewById(R.id.regist1), Gravity.BOTTOM, 0, 0);
                 break;
 
             case R.id.btn_next:
+                mRegistVerEntity.setAid(academy_id);
+                mRegistVerEntity.setMid(major_id);
                 mRegistVerEntity.setUsername(mEditUser.getText().toString());
                 mRegistVerEntity.setName(mEditName.getText().toString());
-
                 if (mRegistVerEntity.isLeagel12()) {
                     Intent intent = new Intent(Regist1Activity.this, Regist2Activity.class);
                     Bundle bundle = new Bundle();
@@ -213,7 +199,7 @@ public class Regist1Activity extends AppCompatActivity {
                 case R.id.pop_confirm:
                     if (classinfo != null) {
                         class_popUp.dismiss();
-                        mEditClass.setText(classinfo);
+                        textClass.setText(classinfo);
                         mRegistVerEntity.setClassinfo(classinfo);
                     }
                     break;
@@ -228,22 +214,17 @@ public class Regist1Activity extends AppCompatActivity {
         if ((requestCode == academy_req) && (resultCode == academy_res)) {
             academy_name = data.getStringExtra("academy_name");
             academy_id = data.getIntExtra("academy_id", -1);
-            mEditor.putInt("academy_id", academy_id);
-            mEditor.commit();
-            mEditAcademy.setText(academy_name);
-            mRegistVerEntity.setAid(academy_id);
+            textAcademy.setText(academy_name);
         }
 
         if ((requestCode == major_req) && (resultCode == major_res)) {
             major_name = data.getStringExtra("major_name");
             major_id = data.getIntExtra("major_id", -1);
-            mEditMajor.setText(major_name);
-            mRegistVerEntity.setMid(major_id);
-
+            textMajor.setText(major_name);
         }
     }
 
-    @OnClick({R.id.im_male, R.id.im_female, R.id.edit_academy})
+    @OnClick({R.id.im_male, R.id.im_female})
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.im_male:
@@ -255,3 +236,7 @@ public class Regist1Activity extends AppCompatActivity {
         }
     }
 }
+
+
+
+
