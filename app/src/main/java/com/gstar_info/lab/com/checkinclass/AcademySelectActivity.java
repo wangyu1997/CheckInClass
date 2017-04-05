@@ -12,7 +12,6 @@ import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
 import com.gstar_info.lab.com.checkinclass.Api.API;
 import com.gstar_info.lab.com.checkinclass.adapter.ListAcademyGroupItemAdapter;
 import com.gstar_info.lab.com.checkinclass.model.AcademysEntity;
@@ -37,10 +36,10 @@ import static rx.schedulers.Schedulers.io;
 public class AcademySelectActivity extends AppCompatActivity {
 
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.academy_group_list)
     ListView academyGroupList;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     private AppCompatActivity context;
     private List<AcademysEntity.DataBean> dataList;
     private ListAcademyGroupItemAdapter adapter;
@@ -66,6 +65,12 @@ public class AcademySelectActivity extends AppCompatActivity {
         AppManager.getAppManager().addActivity(this);
         ButterKnife.bind(this);
         dataList = new ArrayList<>();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         getSchoolList();
         if (getIntent().getIntExtra("flag", -1) != -1) {
             flag = true;
