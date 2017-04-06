@@ -10,7 +10,9 @@
     <color name="textcolor3">#DEDFE0</color>
     <color name="textcolor4">#F3F3F3</color>
     <color name="textcolor5">#FFAA66CC</color>
+    <color name="btn_text">#eb91010b</color>
     <color name="transprant">#00000000</color>
+    <color name="purple_transprant">#005413a3</color>
     <color name="black_semi_transparent">#B2000000</color>
     <color name="background">#F3F3F3</color>
     <color name="half_black">#808080</color>
@@ -100,6 +102,8 @@
     <color name="purple_100">#e1bee7</color>
     <color name="purple_200">#cd93d8</color>
     <color name="purple_300">#ba68c8</color>
+    <color name="purple_transparent">#a280a7</color>
+
     <color name="purple_400">#ab47bc</color>
     <color name="purple_40080">#30ab47bc</color>
     <color name="purple_500">#9c27b0</color>

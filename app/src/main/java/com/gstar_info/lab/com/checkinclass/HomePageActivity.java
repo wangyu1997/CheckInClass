@@ -101,6 +101,35 @@ public class HomePageActivity extends AppCompatActivity {
         aid = Integer.parseInt(data.getStringExtra("aid"));
         aname = data.getStringExtra("aname");
         adapter = new ListCourseItemAdapter(HomePageActivity.this, datas, aid, aname);
+        adapter.setRecyclerOnItemClickListener(new RecyclerOnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String courseid = datas.get(position - 1).getId();
+                String coursename = datas.get(position - 1).getC_name();
+                String headimg = datas.get(position - 1).getHeader();
+                String teachername = datas.get(position-1).getTeacher();
+
+                Intent intent = new Intent(HomePageActivity.this, CourseDetailActivity.class);
+                Toast.makeText(HomePageActivity.this, " " + courseid, Toast.LENGTH_SHORT)
+                        .show();
+
+                intent.putExtra("courseid", courseid);
+                intent.putExtra("coursename", coursename);
+                intent.putExtra("headimg", headimg);
+                intent.putExtra("teachername", teachername);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                String courseid = datas.get(position - 1).getId();
+                Intent intent = new Intent(HomePageActivity.this, CourseDetailActivity.class);
+                Toast.makeText(HomePageActivity.this, " " + courseid, Toast.LENGTH_SHORT)
+                        .show();
+                intent.putExtra("courseid", courseid);
+                startActivity(intent);
+            }
+        });
         courseList.setAdapter(adapter);
         idSwipeLy.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
         idSwipeLy.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -158,6 +187,7 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void getCourse(int aid) {
+
         Retrofit retrofit = HttpControl.getInstance().getRetrofit();
         API api = retrofit.create(API.class);
         api.getCourses(aid)

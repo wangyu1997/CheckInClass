@@ -16,6 +16,7 @@ public class StudentInfoBean {
     private String header;
     private String classX;
     private String createTime;
+    private String password;
 
 
     public StudentInfoBean() {
@@ -35,6 +36,14 @@ public class StudentInfoBean {
 
     }
 
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getHeader() {
         return header;

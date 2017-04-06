@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -15,6 +16,7 @@ import com.gstar_info.lab.com.checkinclass.AcademySelectActivity;
 import com.gstar_info.lab.com.checkinclass.FootTextInterFace;
 import com.gstar_info.lab.com.checkinclass.HomePageActivity;
 import com.gstar_info.lab.com.checkinclass.R;
+import com.gstar_info.lab.com.checkinclass.RecyclerOnItemClickListener;
 import com.gstar_info.lab.com.checkinclass.model.courseShowEntity.DataBean;
 
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final int footType = 908;
     private static final int headType = 167;
     public FootTextInterFace interFace;
-
+    private RecyclerOnItemClickListener mItemClickListener;
 
     public ListCourseItemAdapter(AppCompatActivity context, List<DataBean> objects, int aid, String aname) {
         this.objects = objects;
@@ -40,6 +42,11 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.aid = aid;
         this.aname = aname;
         this.layoutInflater = LayoutInflater.from(context);
+    }
+
+
+    public void setRecyclerOnItemClickListener(RecyclerOnItemClickListener onItemClickListener) {
+        this.mItemClickListener = onItemClickListener;
     }
 
     public void setData(List<DataBean> objects) {
@@ -84,7 +91,7 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (position == 0) {
             if (holder instanceof HeadHolder) {
                 ((HeadHolder) holder).tv_title.setText(aname);
@@ -102,6 +109,7 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         if ((position != objects.size() + 1) && (position != 0)) {
             DataBean object = objects.get(position - 1);
+//            String id = object.getId();//课程ID
             String courseName = object.getC_name();
             String headUrl = object.getHeader();
             String teacherName = object.getTeacher();
@@ -127,6 +135,22 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 ((ViewHolder) holder).tvTime.setText(time);
                 ((ViewHolder) holder).tvStudentnumber.setText(number);
             }
+
+            if (mItemClickListener != null) {
+                ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mItemClickListener.onItemClick(v, position);
+                    }
+                });
+                ((ViewHolder) holder).itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        mItemClickListener.onItemLongClick(v, position);
+                        return true;
+                    }
+                });
+            }
         }
         if (position == objects.size() + 1) {
             if (holder instanceof FootViewHolder) {
@@ -140,10 +164,12 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return position;
     }
 
+
     @Override
     public int getItemCount() {
         return objects.size() + 2;
     }
+
 
     protected class HeadHolder extends RecyclerView.ViewHolder {
         private Toolbar toolbar;
@@ -174,9 +200,13 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private TextView tvGrade;
         private TextView tvStudentnumber;
         private SimpleDraweeView courseState;
+        private RecyclerOnItemClickListener mOnItemClickListener;
+        private RelativeLayout itemView;
+
 
         public ViewHolder(View view) {
             super(view);
+            itemView = (RelativeLayout) view.findViewById(R.id.itemView);
             tvCoursename = (TextView) view.findViewById(R.id.tv_coursename);
             courseIcon = (SimpleDraweeView) view.findViewById(R.id.course_icon);
             tvTeacher = (TextView) view.findViewById(R.id.tv_teacher);
@@ -185,6 +215,13 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             tvGrade = (TextView) view.findViewById(R.id.tv_grade);
             tvStudentnumber = (TextView) view.findViewById(R.id.tv_studentnumber);
             courseState = (SimpleDraweeView) view.findViewById(R.id.course_state);
+
         }
+
+        public void setOnItemClickListener(RecyclerOnItemClickListener onItemClickListener) {
+            this.mOnItemClickListener = onItemClickListener;
+        }
+
+
     }
 }

@@ -127,10 +127,11 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "登录成功:", Toast.LENGTH_SHORT).show();
                             mStudentInfoBean = loginEntity.getData();
                             UserInsertHelper.removeUser(LoginActivity.this);
-                            UserInsertHelper.insertUser(LoginActivity.this, mStudentInfoBean);
+                            UserInsertHelper.insertUser(LoginActivity.this, mStudentInfoBean, passwd);
                             Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
                             intent.putExtra("aid", loginEntity.getData().getAid());
                             intent.putExtra("aname", loginEntity.getData().getA_name());
+                            intent.putExtra("passwd", passwd);
                             startActivity(intent);
 
 

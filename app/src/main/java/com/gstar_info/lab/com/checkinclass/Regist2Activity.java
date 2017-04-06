@@ -68,7 +68,7 @@ public class Regist2Activity extends AppCompatActivity {
     private RegistVerEntity mRegistVerEntity;
     private String rawcode;
     private String code;
-    private int i = 60;
+    private int i = 0x003;
     private String major_name;
     private int mid;
     private String classinfo;
@@ -124,6 +124,18 @@ public class Regist2Activity extends AppCompatActivity {
 
         final String deviceId = MyApplication.getDeviceId();
 
+//        Log.d(TAG, "regist: " +
+//                mRegistVerEntity.getUsername() +
+//                "\n" +
+//                mRegistVerEntity.getPassword() +
+//                "\n" +
+//                mRegistVerEntity.getMid()
+//                + "\n" +
+//                mRegistVerEntity.getSex()
+//                + "\n" +
+//                deviceId +
+//                "\n" +
+//                mRegistVerEntity.getClassinfo());
         api.studentRegister(mRegistVerEntity.getUsername(),
                 mRegistVerEntity.getPassword(),
                 mRegistVerEntity.getMid(),
@@ -152,7 +164,7 @@ public class Regist2Activity extends AppCompatActivity {
                     public void onNext(ObjEntity registerEntity) {
                         if (registerEntity.isError()) {
                             Toast.makeText(Regist2Activity.this,
-                                    "注册失败:"+registerEntity.getMsg(), Toast.LENGTH_SHORT).show();
+                                    "注册失败" + registerEntity.getMsg(), Toast.LENGTH_SHORT).show();
                             mProgressBar.setVisibility(View.GONE);
                         } else {
                             Toast.makeText(Regist2Activity.this,
@@ -192,7 +204,7 @@ public class Regist2Activity extends AppCompatActivity {
                             Toast.makeText(Regist2Activity.this, "登录失败:" + loginEntity.getMsg(), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(Regist2Activity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                            UserInsertHelper.insertUser(Regist2Activity.this, loginEntity.getData());
+                            UserInsertHelper.insertUser(Regist2Activity.this, loginEntity.getData(), mRegistVerEntity.getPassword());
                             startActivity(new Intent(Regist2Activity.this, upHeaderActivity.class));
                         }
                     }
@@ -249,7 +261,7 @@ public class Regist2Activity extends AppCompatActivity {
                     @Override
                     public void onNext(StringEntity stringEntity) {
                         if (stringEntity.isError()) {
-                            Toast.makeText(Regist2Activity.this, "发送验证码失败:"+stringEntity.getMsg(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Regist2Activity.this, "发送验证码失败" + stringEntity.getMsg(), Toast.LENGTH_SHORT).show();
                         } else {
                             rawcode = stringEntity.getData();
                             Toast.makeText(Regist2Activity.this, "验证码发送成功，请回邮箱查看", Toast.LENGTH_SHORT).show();
