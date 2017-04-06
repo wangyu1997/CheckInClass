@@ -10,7 +10,6 @@ import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,10 +25,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.gstar_info.lab.com.checkinclass.Api.API;
 import com.gstar_info.lab.com.checkinclass.model.CourseinfoEntity;
 import com.gstar_info.lab.com.checkinclass.model.ObjEntity;
-import com.gstar_info.lab.com.checkinclass.model.StudentInfoBean;
 import com.gstar_info.lab.com.checkinclass.utils.AppManager;
 import com.gstar_info.lab.com.checkinclass.utils.HttpControl;
-import com.gstar_info.lab.com.checkinclass.utils.UserInsertHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,6 +87,8 @@ public class CourseDetailActivity extends AppCompatActivity {
     ProgressBar mProgressBar;
     @BindView(R.id.swipe)
     SwipeRefreshLayout mSwipe;
+    @BindView(R.id.sign_layout)
+    LinearLayout signLayout;
 
 
     private int courseid;
@@ -121,22 +120,12 @@ public class CourseDetailActivity extends AppCompatActivity {
 
 
         AppManager.getAppManager().addActivity(this);
-        initData();
         initView();
-    }
-
-    private void initData() {
-
-        courseid = Integer.parseInt(getIntent().getStringExtra("courseid"));
-        coursename = getIntent().getStringExtra("coursename");
-        headimg = getIntent().getStringExtra("headimg");
-        teachername = getIntent().getStringExtra("teachername");
-
-
     }
 
 
     private void initView() {
+        courseid = Integer.parseInt(getIntent().getStringExtra("courseid"));
         mToolbar.setTitle("");
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,8 +134,6 @@ public class CourseDetailActivity extends AppCompatActivity {
             }
         });
         setSupportActionBar(mToolbar);
-
-
         mProgressBar.setVisibility(View.VISIBLE);
 
         mSwipe.setDistanceToTriggerSync(400);// 设置手指在屏幕下拉多少距离会触发下拉刷新
@@ -160,11 +147,6 @@ public class CourseDetailActivity extends AppCompatActivity {
                 check(courseid);
             }
         });
-
-
-        mTeacherName.setText(teachername);
-        mTvCoursename.setText(coursename);
-        mTeacherHead.setImageURI(headimg);
 
     }
 
@@ -187,11 +169,8 @@ public class CourseDetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_quit) {
-            Toast.makeText(this, "退选当前课程", Toast.LENGTH_SHORT).show();
-        }
-        if (id == R.id.action_join) {
-            Toast.makeText(this, "加入当前课程", Toast.LENGTH_SHORT).show();
+        if (id == R.id.action_action) {
+            Toast.makeText(this, "功能键", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -229,8 +208,6 @@ public class CourseDetailActivity extends AppCompatActivity {
                                 isMine = true;
                             } else {
                                 isMine = false;
-
-
                             }
                         }
                         getCourseDetail(courseid);
@@ -243,7 +220,6 @@ public class CourseDetailActivity extends AppCompatActivity {
     private void getCourseDetail(int courseid) {
         Retrofit retrofit = HttpControl.getInstance().getRetrofit();
         API api = retrofit.create(API.class);
-        Log.d(TAG, "getCourseDetail: "+courseid);
         api.getCourseInfo(courseid)
                 .subscribeOn(io())
                 .unsubscribeOn(io())
@@ -257,7 +233,7 @@ public class CourseDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(CourseDetailActivity.this, "获取课程详情失败，请稍后重试",
+                        Toast.makeText(CourseDetailActivity.this, "获取课程详情失败，请稍后重试1",
                                 Toast.LENGTH_SHORT).show();
                         mProgressBar.setVisibility(View.GONE);
                         mSwipe.setRefreshing(false);
@@ -266,11 +242,11 @@ public class CourseDetailActivity extends AppCompatActivity {
                     @Override
                     public void onNext(CourseinfoEntity courseinfoEntity) {
                         if (courseinfoEntity.isError()) {
-                            Toast.makeText(CourseDetailActivity.this, "获取课程详情失败，请稍后重试"+
+                            Toast.makeText(CourseDetailActivity.this, "获取课程详情失败，请稍后重试" +
                                     courseinfoEntity.getMsg(), Toast.LENGTH_SHORT).show();
 
                         } else {
-                            Message message = Message.obtain();
+                            Message message = mHandler.obtainMessage();
                             message.what = REFRESHVIEW;
                             message.obj = courseinfoEntity;
                             message.sendToTarget();
@@ -295,17 +271,23 @@ public class CourseDetailActivity extends AppCompatActivity {
 
     private void freshView(CourseinfoEntity courseinfoEntity) {
         CourseinfoEntity.DataBean bean = courseinfoEntity.getData();
+        if (isMine) {
+            signLayout.setVisibility(View.VISIBLE);
+        } else {
+            signLayout.setVisibility(View.GONE);
+        }
         mTvWifi.setText(bean.getWifi());
         mTvGpa.setText(bean.getGpa());
-
+        mTeacherName.setText(bean.getTeacher());
+        mTvCoursename.setText(bean.getC_name());
+        mTeacherHead.setImageURI(Uri.parse(bean.getHeader()));
         mTvCreate.setText(bean.getCreateTime());
         mTvNum.setText(bean.getNumber());
         mCourseContent.setText(bean.getContent());
         mTvPlace.setText(bean.getPlace());
-        mTvTime.setText(bean.getTime());
+        mTvTime.setText(bean.getTime().split(" ")[0]);
         mTvAcademy.setText(bean.getA_name().substring(0, bean.getA_name().indexOf("学院")));
         signFlag = bean.getSignFlag();
-
         String stuheads = bean.getHeader();
         if (stuheads == null || stuheads.isEmpty()) {
             mHeaders.setVisibility(View.GONE);
@@ -354,27 +336,15 @@ public class CourseDetailActivity extends AppCompatActivity {
                     Toast.makeText(this, "签到记录", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_sign:
-                if (isMine) {
-                    if (flag == 0) {
-                        //sign not start or sign end
-                        Toast.makeText(this, "上课时间还没到," +
-                                "过会儿再来签到吧 :)", Toast.LENGTH_SHORT).show();
-
-
-                    } else if (flag == 2) {
-                        Toast.makeText(this, "已经过了签到时间 :("
-                                , Toast.LENGTH_SHORT).show();
-
-
-                    } else if (flag == 1) {
-                        //do sign
-//                    sign();
-                    }
-                } else {
-                    Toast.makeText(this, "你没有参加该课程不能签到哦 :)", Toast.LENGTH_SHORT).show();
+                if (flag == 0) {
+                    Toast.makeText(this, "上课时间还没到," +
+                            "过会儿再来签到吧 :)", Toast.LENGTH_SHORT).show();
+                } else if (flag == 2) {
+                    Toast.makeText(this, "已经过了签到时间 :("
+                            , Toast.LENGTH_SHORT).show();
+                } else if (flag == 1) {
 
                 }
-
                 break;
         }
     }

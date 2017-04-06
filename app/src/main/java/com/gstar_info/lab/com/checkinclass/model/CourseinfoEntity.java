@@ -1,75 +1,20 @@
 package com.gstar_info.lab.com.checkinclass.model;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by ritchiehuang on 4/6/17.
  */
 
 public class CourseinfoEntity {
 
-
     /**
      * error : false
      * msg : ok
-     * data : {"id":"8","cid":"6","c_name":"文献检索","aid":"17","a_name":"艺术设计学院","gpa":"1","tId":"58e21ecd3ed1d","wifi":"暂未指定","signFlag":"2","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","header_con":"","place":"厚学312","content":"请同学们准时到","number":"0","time":"周二 1-2节","state":"1","createTime":"2017-04-06 00:03:39"}
+     * data : {"id":"1","cid":"1","c_name":"数据结构与算法","aid":"1","a_name":"计算机科学与技术学院","gpa":"3","tId":"58e37c3e02392","wifi":"暂未指定","signFlag":"2","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/FibvckDcumTOTMwXytEiJlHODHvl","header_con":"http://onqif3xou.bkt.clouddn.com/FlG45A7c4KSV6qUoKe7R10V85ilS;","place":"厚学312","content":"请同学们准时到","number":"1","time":"第八周 周二 1/2","state":"0","createTime":"2017-04-06 00:03:09"}
      */
 
     private boolean error;
     private String msg;
     private DataBean data;
-
-    public static CourseinfoEntity objectFromData(String str) {
-
-        return new Gson().fromJson(str, CourseinfoEntity.class);
-    }
-
-    public static CourseinfoEntity objectFromData(String str, String key) {
-
-        try {
-            JSONObject jsonObject = new JSONObject(str);
-
-            return new Gson().fromJson(jsonObject.getString(str), CourseinfoEntity.class);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public static List<CourseinfoEntity> arrayCourseinfoEntityFromData(String str) {
-
-        Type listType = new TypeToken<ArrayList<CourseinfoEntity>>() {
-        }.getType();
-
-        return new Gson().fromJson(str, listType);
-    }
-
-    public static List<CourseinfoEntity> arrayCourseinfoEntityFromData(String str, String key) {
-
-        try {
-            JSONObject jsonObject = new JSONObject(str);
-            Type listType = new TypeToken<ArrayList<CourseinfoEntity>>() {
-            }.getType();
-
-            return new Gson().fromJson(jsonObject.getString(str), listType);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return new ArrayList();
-
-
-    }
 
     public boolean isError() {
         return error;
@@ -97,24 +42,24 @@ public class CourseinfoEntity {
 
     public static class DataBean {
         /**
-         * id : 8
-         * cid : 6
-         * c_name : 文献检索
-         * aid : 17
-         * a_name : 艺术设计学院
-         * gpa : 1
-         * tId : 58e21ecd3ed1d
+         * id : 1
+         * cid : 1
+         * c_name : 数据结构与算法
+         * aid : 1
+         * a_name : 计算机科学与技术学院
+         * gpa : 3
+         * tId : 58e37c3e02392
          * wifi : 暂未指定
          * signFlag : 2
          * teacher : 王宇
-         * header : http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A
-         * header_con :
+         * header : http://onqif3xou.bkt.clouddn.com/FibvckDcumTOTMwXytEiJlHODHvl
+         * header_con : http://onqif3xou.bkt.clouddn.com/FlG45A7c4KSV6qUoKe7R10V85ilS;
          * place : 厚学312
          * content : 请同学们准时到
-         * number : 0
-         * time : 周二 1-2节
-         * state : 1
-         * createTime : 2017-04-06 00:03:39
+         * number : 1
+         * time : 第八周 周二 1/2
+         * state : 0
+         * createTime : 2017-04-06 00:03:09
          */
 
         private String id;
@@ -135,50 +80,6 @@ public class CourseinfoEntity {
         private String time;
         private String state;
         private String createTime;
-
-        public static DataBean objectFromData(String str) {
-
-            return new Gson().fromJson(str, DataBean.class);
-        }
-
-        public static DataBean objectFromData(String str, String key) {
-
-            try {
-                JSONObject jsonObject = new JSONObject(str);
-
-                return new Gson().fromJson(jsonObject.getString(str), DataBean.class);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        public static List<DataBean> arrayDataBeanFromData(String str) {
-
-            Type listType = new TypeToken<ArrayList<DataBean>>() {
-            }.getType();
-
-            return new Gson().fromJson(str, listType);
-        }
-
-        public static List<DataBean> arrayDataBeanFromData(String str, String key) {
-
-            try {
-                JSONObject jsonObject = new JSONObject(str);
-                Type listType = new TypeToken<ArrayList<DataBean>>() {
-                }.getType();
-
-                return new Gson().fromJson(jsonObject.getString(str), listType);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return new ArrayList();
-
-
-        }
 
         public String getId() {
             return id;

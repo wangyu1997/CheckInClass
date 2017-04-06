@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_quit"
-        android:title="@string/quit"
-        app:showAsAction="ifRoom"
-        />
-    <item
-        android:id="@+id/action_join"
-        android:title="@string/join_class"
-        app:showAsAction="ifRoom"
-        />
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_action"
+        android:title="功能"  android:icon="@mipmap/more_gray"
+        android:orderInCategory="100" app:showAsAction="ifRoom"/>
 </menu>

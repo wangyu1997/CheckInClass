@@ -105,18 +105,8 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 String courseid = datas.get(position - 1).getId();
-                String coursename = datas.get(position - 1).getC_name();
-                String headimg = datas.get(position - 1).getHeader();
-                String teachername = datas.get(position-1).getTeacher();
-
                 Intent intent = new Intent(HomePageActivity.this, CourseDetailActivity.class);
-                Toast.makeText(HomePageActivity.this, " " + courseid, Toast.LENGTH_SHORT)
-                        .show();
-
                 intent.putExtra("courseid", courseid);
-                intent.putExtra("coursename", coursename);
-                intent.putExtra("headimg", headimg);
-                intent.putExtra("teachername", teachername);
                 startActivity(intent);
             }
 

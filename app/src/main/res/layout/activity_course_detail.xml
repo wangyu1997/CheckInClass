@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:fresco="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg1"
+    android:fitsSystemWindows="true">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
@@ -42,23 +44,23 @@
                         android:layout_gravity="center"
                         android:fontFamily="sans-serif"
                         android:gravity="center"
+                        android:text="课程名称"
                         android:textColor="@color/white"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
                 </android.support.v7.widget.Toolbar>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
+                    android:gravity="top|center_horizontal"
                     android:orientation="horizontal"
-                    android:paddingBottom="60dp">
+                    android:paddingBottom="20dp">
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/teacher_head"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        fresco:roundAsCircle="true"
-                        />
+                        fresco:roundAsCircle="true" />
 
                     <TextView
                         android:id="@+id/teacher_name"
@@ -66,8 +68,9 @@
                         android:layout_height="60dp"
                         android:gravity="center"
                         android:paddingLeft="20dp"
+                        android:text="教师姓名"
                         android:textColor="@color/white"
-                        android:textSize="20sp"/>
+                        android:textSize="20sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -111,7 +114,7 @@
                                 android:gravity="center_vertical|left"
                                 android:text="@string/wifi"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/tv_wifi"
@@ -119,7 +122,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical|right"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -136,7 +139,7 @@
                                 android:gravity="center_vertical|left"
                                 android:text="@string/class_start"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/tv_time"
@@ -144,7 +147,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical|right"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -161,7 +164,7 @@
                                 android:gravity="center_vertical|left"
                                 android:text="@string/create_time"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/tv_create"
@@ -169,7 +172,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical|right"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -187,7 +190,7 @@
                                 android:gravity="center_vertical|left"
                                 android:text="@string/join_number"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/tv_num"
@@ -195,7 +198,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical|right"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -210,19 +213,19 @@
                                 android:id="@+id/stu_head1"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                fresco:roundAsCircle="true"/>
+                                fresco:roundAsCircle="true" />
 
                             <com.facebook.drawee.view.SimpleDraweeView
                                 android:id="@+id/stu_head2"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                fresco:roundAsCircle="true"/>
+                                fresco:roundAsCircle="true" />
 
                             <com.facebook.drawee.view.SimpleDraweeView
                                 android:id="@+id/stu_head3"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                fresco:roundAsCircle="true"/>
+                                fresco:roundAsCircle="true" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -255,7 +258,7 @@
                                 android:gravity="center_vertical|left"
                                 android:text="@string/gpa"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/tv_gpa"
@@ -263,7 +266,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical|right"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -280,7 +283,7 @@
                                 android:gravity="center_vertical|left"
                                 android:text="@string/class_place"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/tv_place"
@@ -288,7 +291,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical|right"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -305,7 +308,7 @@
                                 android:gravity="center_vertical|left"
                                 android:text="@string/class_state"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/tv_state"
@@ -313,7 +316,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical|right"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -330,7 +333,7 @@
                                 android:gravity="center_vertical|left"
                                 android:text="@string/create_academy"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/tv_academy"
@@ -338,16 +341,16 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical|right"
                                 android:textColor="@color/white"
-                                android:textSize="18sp"/>
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/sign_layout"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:orientation="vertical">
-
                             <Button
                                 android:id="@+id/btn_sign"
                                 android:layout_width="wrap_content"
@@ -355,7 +358,7 @@
                                 android:background="@drawable/button_transparent"
                                 android:text="@string/sign"
                                 android:textColor="@color/red"
-                                android:textSize="20sp"/>
+                                android:textSize="20sp" />
                         </LinearLayout>
 
 
@@ -373,13 +376,13 @@
                         android:layout_height="20dp"
                         android:layout_marginBottom="5dp"
                         android:text="@string/class_content"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white" />
 
                     <TextView
                         android:id="@+id/course_content"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
 
@@ -391,7 +394,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
 
         </LinearLayout>
