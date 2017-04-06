@@ -15,7 +15,10 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
+            android:clickable="true"
+            android:longClickable="true"
             android:id="@+id/course_list"
+            android:foreground="?android:attr/selectableItemBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/transprant"/>

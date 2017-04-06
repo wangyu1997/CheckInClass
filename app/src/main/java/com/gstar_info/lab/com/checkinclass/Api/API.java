@@ -2,6 +2,7 @@ package com.gstar_info.lab.com.checkinclass.Api;
 
 import com.gstar_info.lab.com.checkinclass.model.AcademysEntity;
 import com.gstar_info.lab.com.checkinclass.model.ArrayEntity;
+import com.gstar_info.lab.com.checkinclass.model.CourseinfoEntity;
 import com.gstar_info.lab.com.checkinclass.model.LoginEntity;
 import com.gstar_info.lab.com.checkinclass.model.MajorEntity;
 import com.gstar_info.lab.com.checkinclass.model.ObjEntity;
@@ -20,7 +21,7 @@ import rx.Observable;
  */
 
 public interface API {
-    String BASE_URL = "http://119.29.97.151/BigClass/";
+    String BASE_URL = "http://119.29.97.151/BigClass1/";
 
 
     //注册
@@ -34,21 +35,21 @@ public interface API {
     @FormUrlEncoded
     @POST("student/regist.php")
     Observable<ObjEntity> studentRegister(@Field("username")
-                                                       String username,
+                                                  String username,
                                           @Field("password")
-                                                       String password,
+                                                  String password,
                                           @Field("mid")
-                                                       int mid,
+                                                  int mid,
                                           @Field("email")
-                                                       String email,
+                                                  String email,
                                           @Field("name")
-                                                       String name,
+                                                  String name,
                                           @Field("sex")
-                                                       int sex,
+                                                  int sex,
                                           @Field("device")
-                                                       String device,
+                                                  String device,
                                           @Field("class")
-                                                       String classX
+                                                  String classX
     );
 
     //学生登录接口
@@ -97,6 +98,18 @@ public interface API {
     @FormUrlEncoded
     @POST("public/allcourses.php")
     Observable<courseShowEntity> getCourses(@Field("aid") int aid);
+
+
+    //检查课程参加是否已参加
+    @FormUrlEncoded
+    @POST("student/check.php")
+    Observable<ObjEntity> checkCourse(@Field("cid") int cid);
+
+
+    //课程详情
+    @FormUrlEncoded
+    @POST("public/Info.php")
+    Observable<CourseinfoEntity> getCourseInfo(@Field("id") int id);
 
 
 }

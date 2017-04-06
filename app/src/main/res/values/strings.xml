@@ -27,6 +27,19 @@
     <string name="grade">绩点</string>
     <string name="studentnumber">参加人数</string>
     <string name="select_major">选择专业</string>
+    <string name="back">返回</string>
+    <string name="sign">签到</string>
+    <string name="quit">退选</string>
+    <string name="wifi">WI-FI:</string>
+    <string name="gpa">GPA:</string>
+    <string name="create_time">创建时间:</string>
+    <string name="join_number">报名人数:</string>
+    <string name="class_start">上课时间:</string>
+    <string name="class_state">上课状态:</string>
+    <string name="class_content">上课内容:</string>
+    <string name="class_place">上课地点</string>
+    <string name="create_academy">开设学院</string>
+    <string name="join_class">加入课程</string>
     <string-array name="sex">
         <item>♂ 男生</item>
         <item>♀ 女生</item>

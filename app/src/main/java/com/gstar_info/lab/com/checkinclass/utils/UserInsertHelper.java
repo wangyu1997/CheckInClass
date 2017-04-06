@@ -21,9 +21,10 @@ public class UserInsertHelper {
     public static final String SEX = "sex";
     public static final String CLASS = "class";
     public static final String CREATETIME = "createTime";
+    public static final String PASSWORD = "password";
 
 
-    public static void insertUser(Context context, LoginEntity.DataBean dataBean) {
+    public static void insertUser(Context context, LoginEntity.DataBean dataBean, String password) {
         StudentInfoBean userInfoBean = new StudentInfoBean(dataBean);
         SharedPreferences.Editor editor = MyApplication.getEditor(context);
         editor.putString(UID, userInfoBean.getUid());
@@ -36,6 +37,7 @@ public class UserInsertHelper {
         editor.putString(M_NAME, userInfoBean.getM_name());
         editor.putString(CLASS, userInfoBean.getClassX());
         editor.putString(CREATETIME, userInfoBean.getCreateTime());
+        editor.putString(PASSWORD, password);
         editor.commit();
     }
 
@@ -65,10 +67,11 @@ public class UserInsertHelper {
             userInfoBean.setAid(sharedPreferences.getString(AID, null));
             userInfoBean.setMid(sharedPreferences.getString(USERNAME, null));
             userInfoBean.setA_name(sharedPreferences.getString(A_NAME, null));
-            userInfoBean.setMid(sharedPreferences.getString(MID, null));
+            userInfoBean.setUsername(sharedPreferences.getString(USERNAME, null));
             userInfoBean.setM_name(sharedPreferences.getString(M_NAME, null));
             userInfoBean.setClassX(sharedPreferences.getString(CLASS, null));
             userInfoBean.setCreateTime(sharedPreferences.getString(CREATETIME, null));
+            userInfoBean.setPassword(sharedPreferences.getString(PASSWORD, ""));
             return userInfoBean;
         }
 
@@ -93,6 +96,7 @@ public class UserInsertHelper {
         editor.remove(M_NAME);
         editor.remove(CLASS);
         editor.remove(CREATETIME);
+        editor.remove(PASSWORD);
         editor.commit();
     }
 

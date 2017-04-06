@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="130dp"
-    android:background="@drawable/white_bg"
-    android:orientation="vertical"
-    android:layout_marginBottom="10dp"
-    android:layout_marginLeft="15dp"
-    android:layout_marginRight="15dp">
+                xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/itemView"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/white_bg"
+                android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/lin1"
@@ -27,7 +28,7 @@
             android:text="数据结构"
             android:textAlignment="center"
             android:textColor="@color/textcolor5"
-            android:textSize="20sp" />
+            android:textSize="20sp"/>
 
     </LinearLayout>
 
@@ -45,7 +46,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            fresco:roundAsCircle="true" />
+            fresco:roundAsCircle="true"/>
 
 
     </FrameLayout>
@@ -73,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="dfsf"
-                android:textColor="@color/textcolor5" />
+                android:textColor="@color/textcolor5"/>
 
         </LinearLayout>
 
@@ -97,7 +98,7 @@
                     android:text="@string/place"
                     android:textAlignment="viewStart"
 
-                    android:textColor="@color/textcolor5" />
+                    android:textColor="@color/textcolor5"/>
 
                 <TextView
                     android:id="@+id/tv_place"
@@ -107,7 +108,7 @@
                     android:text="ffgjkkk"
                     android:textAlignment="viewStart"
 
-                    android:textColor="@color/textcolor5" />
+                    android:textColor="@color/textcolor5"/>
 
             </LinearLayout>
 
@@ -123,7 +124,7 @@
                     android:text="@string/time"
                     android:textAlignment="viewStart"
 
-                    android:textColor="@color/textcolor5" />
+                    android:textColor="@color/textcolor5"/>
 
                 <TextView
                     android:id="@+id/tv_time"
@@ -133,7 +134,7 @@
                     android:text="ffgjkkk"
                     android:textAlignment="viewStart"
 
-                    android:textColor="@color/textcolor5" />
+                    android:textColor="@color/textcolor5"/>
 
             </LinearLayout>
 
@@ -160,7 +161,7 @@
                     android:text="@string/grade"
                     android:textAlignment="viewStart"
 
-                    android:textColor="@color/textcolor5" />
+                    android:textColor="@color/textcolor5"/>
 
                 <TextView
                     android:id="@+id/tv_grade"
@@ -170,7 +171,7 @@
                     android:text="ffgjkkk"
                     android:textAlignment="viewStart"
 
-                    android:textColor="@color/textcolor5" />
+                    android:textColor="@color/textcolor5"/>
 
             </LinearLayout>
 
@@ -185,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/studentnumber"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/textcolor5" />
+                    android:textColor="@color/textcolor5"/>
 
                 <TextView
                     android:id="@+id/tv_studentnumber"
@@ -194,7 +195,7 @@
                     android:layout_marginLeft="12dp"
                     android:text="ffgjkkk"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/textcolor5" />
+                    android:textColor="@color/textcolor5"/>
 
             </LinearLayout>
 
@@ -216,7 +217,7 @@
         fresco:placeholderImage="@mipmap/logo"
         fresco:roundWithOverlayColor="@color/transprant"
         fresco:roundedCornerRadius="10dp"
-        fresco:viewAspectRatio="1.4" />
+        fresco:viewAspectRatio="1.4"/>
 
 
 </RelativeLayout>
