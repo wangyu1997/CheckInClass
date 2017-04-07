@@ -40,6 +40,7 @@
     <string name="class_place">上课地点</string>
     <string name="create_academy">开设学院</string>
     <string name="join_class">加入课程</string>
+    <string name="signhistory">签到记录</string>
     <string-array name="sex">
         <item>♂ 男生</item>
         <item>♀ 女生</item>

@@ -6,6 +6,7 @@ import com.gstar_info.lab.com.checkinclass.model.CourseinfoEntity;
 import com.gstar_info.lab.com.checkinclass.model.LoginEntity;
 import com.gstar_info.lab.com.checkinclass.model.MajorEntity;
 import com.gstar_info.lab.com.checkinclass.model.ObjEntity;
+import com.gstar_info.lab.com.checkinclass.model.SignHistoryEntity;
 import com.gstar_info.lab.com.checkinclass.model.StringEntity;
 import com.gstar_info.lab.com.checkinclass.model.courseShowEntity;
 
@@ -111,5 +112,19 @@ public interface API {
     @POST("public/Info.php")
     Observable<CourseinfoEntity> getCourseInfo(@Field("id") int id);
 
+    @FormUrlEncoded
+    @POST("public/detail.php")
+    Observable<SignHistoryEntity> getSignHistory(@Field("cid") int cid);
 
+    //学生签到
+    @FormUrlEncoded
+    @POST("student/sign.php")
+    Observable<ArrayEntity> studentSign(@Field("cid") String cid,
+                                        @Field("bssid") String bssid,
+                                        @Field("action") String action);
+
+//    //学生课程历史
+//    @FormUrlEncoded
+//    @POST("student/my")
+//    Observable
 }

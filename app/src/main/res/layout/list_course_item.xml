@@ -8,6 +8,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/white_bg"
+                android:clickable="true"
+                android:focusable="true"
                 android:orientation="vertical">
 
     <LinearLayout

@@ -1,8 +1,11 @@
 package com.gstar_info.lab.com.checkinclass;
 
 import android.Manifest;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +13,7 @@ import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,8 +27,10 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.gstar_info.lab.com.checkinclass.Api.API;
+import com.gstar_info.lab.com.checkinclass.model.ArrayEntity;
 import com.gstar_info.lab.com.checkinclass.model.CourseinfoEntity;
 import com.gstar_info.lab.com.checkinclass.model.ObjEntity;
+import com.gstar_info.lab.com.checkinclass.model.SignHistoryEntity;
 import com.gstar_info.lab.com.checkinclass.utils.AppManager;
 import com.gstar_info.lab.com.checkinclass.utils.HttpControl;
 
@@ -90,15 +96,13 @@ public class CourseDetailActivity extends AppCompatActivity {
     @BindView(R.id.sign_layout)
     LinearLayout signLayout;
 
-
-    private int courseid;
-    private String coursename;
-    private String headimg;
-    private String teachername;
-    private String signFlag;
+    private WifiManager mWifiManager;
+    private int courseid = -1;
     private boolean isMine;
     private int flag = -1000;
     private int number = -1;
+    private String ssid;
+    private String bssid;
 
 
     @Override
@@ -144,6 +148,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             public void onRefresh() {
                 // TODO Auto-generated method stub
                 Toast.makeText(CourseDetailActivity.this, "正在加载中，请稍后...", Toast.LENGTH_SHORT).show();
+                getWifi();
                 check(courseid);
             }
         });
@@ -154,6 +159,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mSwipe.setRefreshing(true);
+        getWifi();
         check(courseid);
         Toast.makeText(this, "正在加载中，请稍后...", Toast.LENGTH_SHORT).show();
     }
@@ -179,6 +185,7 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         Retrofit retrofit = HttpControl.getInstance().getRetrofit();
         API api = retrofit.create(API.class);
+        Log.d(TAG, "check: " + cid);
         api.checkCourse(cid)
                 .subscribeOn(io())
                 .unsubscribeOn(io())
@@ -187,6 +194,11 @@ public class CourseDetailActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted() {
                         //TODO 显示签到button
+                        if (isMine) {
+                            signLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            signLayout.setVisibility(View.GONE);
+                        }
                     }
 
                     @Override
@@ -217,7 +229,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     }
 
 
-    private void getCourseDetail(int courseid) {
+    private void getCourseDetail(final int courseid) {
         Retrofit retrofit = HttpControl.getInstance().getRetrofit();
         API api = retrofit.create(API.class);
         api.getCourseInfo(courseid)
@@ -271,24 +283,22 @@ public class CourseDetailActivity extends AppCompatActivity {
 
     private void freshView(CourseinfoEntity courseinfoEntity) {
         CourseinfoEntity.DataBean bean = courseinfoEntity.getData();
-        if (isMine) {
-            signLayout.setVisibility(View.VISIBLE);
-        } else {
-            signLayout.setVisibility(View.GONE);
-        }
         mTvWifi.setText(bean.getWifi());
         mTvGpa.setText(bean.getGpa());
         mTeacherName.setText(bean.getTeacher());
         mTvCoursename.setText(bean.getC_name());
-        mTeacherHead.setImageURI(Uri.parse(bean.getHeader()));
+        String teacherHead = bean.getHeader();
+        if (teacherHead != null) {
+            mTeacherHead.setImageURI(Uri.parse(teacherHead));
+
+        }
         mTvCreate.setText(bean.getCreateTime());
         mTvNum.setText(bean.getNumber());
         mCourseContent.setText(bean.getContent());
         mTvPlace.setText(bean.getPlace());
         mTvTime.setText(bean.getTime().split(" ")[0]);
         mTvAcademy.setText(bean.getA_name().substring(0, bean.getA_name().indexOf("学院")));
-        signFlag = bean.getSignFlag();
-        String stuheads = bean.getHeader();
+        String stuheads = bean.getHeader_con();
         if (stuheads == null || stuheads.isEmpty()) {
             mHeaders.setVisibility(View.GONE);
         } else {
@@ -325,6 +335,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         mTvState.setText(course_state);
         flag = Integer.parseInt(bean.getSignFlag());
 
+
     }
 
 
@@ -332,8 +343,15 @@ public class CourseDetailActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.join_layout:
-                if (number > 0)
+                if (number > 0) {
+                    Intent intent = new Intent(CourseDetailActivity.this,
+                            SignHistoryActivity.class);
+                    intent.putExtra("cid", courseid);
+                    intent.putExtra("coursename", mTvCoursename.getText().toString());
+                    Log.d(TAG, "onViewClicked: " + courseid);
+                    startActivity(intent);
                     Toast.makeText(this, "签到记录", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.btn_sign:
                 if (flag == 0) {
@@ -343,9 +361,80 @@ public class CourseDetailActivity extends AppCompatActivity {
                     Toast.makeText(this, "已经过了签到时间 :("
                             , Toast.LENGTH_SHORT).show();
                 } else if (flag == 1) {
-
+                    sign();
                 }
                 break;
         }
+    }
+
+    private void sign() {
+        String action;
+        if (mBtnSign.getText().toString().equals("签到 ")) {
+            action = "signin";
+        } else {
+            action = "signout";
+        }
+        mProgressBar.setVisibility(View.VISIBLE);
+        mBtnSign.setEnabled(false);
+        Toast.makeText(this, "正在" + mBtnSign.getText().toString() + ",请稍后...", Toast.LENGTH_SHORT).show();
+
+
+        Retrofit retrofit = HttpControl.getInstance().getRetrofit();
+        API api = retrofit.create(API.class);
+
+        api.studentSign(String.valueOf(courseid), bssid, action)
+                .subscribeOn(io())
+                .unsubscribeOn(io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ArrayEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        mBtnSign.setEnabled(true);
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(CourseDetailActivity.this, mBtnSign.getText().toString() +
+                                "失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                        mBtnSign.setEnabled(true);
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onNext(ArrayEntity arrayEntity) {
+                        if (arrayEntity.isError()) {
+                            Toast.makeText(CourseDetailActivity.this, mBtnSign.getText().toString()
+                                    + "失败" + arrayEntity.getMsg(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(CourseDetailActivity.this, mBtnSign.getText().toString()
+                                    + "成功", Toast.LENGTH_SHORT).show();
+                            if (mBtnSign.getText().toString().equals("签到"))
+                                mBtnSign.setText("签出");
+                            else
+                                mBtnSign.setText("签到");
+                        }
+                    }
+                });
+    }
+
+    private void getWifi() {
+        Toast.makeText(this, "正在搜寻wifi,请稍后", Toast.LENGTH_SHORT).show();
+        mProgressBar.setVisibility(View.VISIBLE);
+        mWifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        WifiInfo info = mWifiManager.getConnectionInfo();
+        if (mWifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLING) {
+            Toast.makeText(this, "请打开wifi并连接后再点击", Toast.LENGTH_SHORT).show();
+        } else {
+            if (info.getNetworkId() == -1) {
+                Toast.makeText(this, "请连接wifi后再点击", Toast.LENGTH_SHORT).show();
+            } else {
+                ssid = info.getSSID();
+                bssid = info.getBSSID();
+//                mTvWifi.setText(ssid);
+            }
+        }
+        mProgressBar.setVisibility(View.GONE);
+
     }
 }
