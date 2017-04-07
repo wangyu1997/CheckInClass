@@ -44,6 +44,11 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.layoutInflater = LayoutInflater.from(context);
     }
 
+    public ListCourseItemAdapter(AppCompatActivity context, List<DataBean> objects) {
+        this.objects = objects;
+        this.context = context;
+    }
+
 
     public void setRecyclerOnItemClickListener(RecyclerOnItemClickListener onItemClickListener) {
         this.mItemClickListener = onItemClickListener;

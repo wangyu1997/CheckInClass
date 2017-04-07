@@ -4,9 +4,9 @@
               android:id="@+id/itemView"
               android:layout_width="match_parent"
               android:layout_height="90dp"
+              android:background="?android:attr/selectableItemBackground"
               android:clickable="true"
               android:focusable="true"
-              android:background="?android:attr/selectableItemBackground"
               android:orientation="horizontal">
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -15,8 +15,8 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginLeft="16dp"
-        fresco:roundAsCircle="true"
         fresco:placeholderImage="@mipmap/placeholder_stuhead"
+        fresco:roundAsCircle="true"
         />
 
     <TextView

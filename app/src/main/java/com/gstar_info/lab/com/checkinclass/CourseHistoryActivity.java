@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.gstar_info.lab.com.checkinclass.Api.API;
 import com.gstar_info.lab.com.checkinclass.adapter.ListCourseItemAdapter;
-import com.gstar_info.lab.com.checkinclass.model.CourseHistoryEntity;
 import com.gstar_info.lab.com.checkinclass.model.courseShowEntity;
 import com.gstar_info.lab.com.checkinclass.utils.AppManager;
 import com.gstar_info.lab.com.checkinclass.utils.HttpControl;
@@ -52,7 +51,7 @@ public class CourseHistoryActivity extends AppCompatActivity {
     private ListCourseItemAdapter adapter;
     private RecyclerView.LayoutManager manager;
     private FootTextInterFace interFace;
-    private List<CourseHistoryEntity.DataBean> datas;
+    private List<courseShowEntity.DataBean> mBeanList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,15 +76,17 @@ public class CourseHistoryActivity extends AppCompatActivity {
     }
 
     private void init() {
-        //TODO SET the first activity selected
         manager = new LinearLayoutManager(this);
         mRecyclerCoursehistroylist.setLayoutManager(manager);
-        datas = new ArrayList<>();
-        adapter = new ListCourseItemAdapter(CourseHistoryActivity.this, datas, aid, aname);
+        mBeanList = new ArrayList<>();
+        adapter = new ListCourseItemAdapter(CourseHistoryActivity.this, mBeanList);
         adapter.setRecyclerOnItemClickListener(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                String courseid = datas.get(position - 1).getId();
+
+                //TODO 退选课程
+
+                String courseid = mBeanList.get(position - 1).getId();
                 Intent intent = new Intent(CourseHistoryActivity.this, CourseDetailActivity.class);
                 intent.putExtra("courseid", courseid);
                 startActivity(intent);
@@ -93,7 +94,9 @@ public class CourseHistoryActivity extends AppCompatActivity {
 
             @Override
             public void onItemLongClick(View view, int position) {
-                String courseid = datas.get(position - 1).getId();
+
+                //TODO 退选课程
+                String courseid = mBeanList.get(position - 1).getId();
                 Intent intent = new Intent(CourseHistoryActivity.this, CourseDetailActivity.class);
                 Toast.makeText(CourseHistoryActivity.this, " " + courseid, Toast.LENGTH_SHORT)
                         .show();
@@ -114,7 +117,7 @@ public class CourseHistoryActivity extends AppCompatActivity {
         interFace = new FootTextInterFace() {
             @Override
             public void setText(TextView tv) {
-                if (datas.size() == 0) {
+                if (mBeanList.size() == 0) {
                     tv.setText("暂无数据");
                 } else {
                     tv.setText("加载完了");
@@ -142,7 +145,7 @@ public class CourseHistoryActivity extends AppCompatActivity {
                 .subscribeOn(io())
                 .unsubscribeOn(io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<CourseHistoryEntity>() {
+                .subscribe(new Subscriber<courseShowEntity>() {
                     @Override
                     public void onCompleted() {
                         mSwipe.setRefreshing(false);
@@ -151,21 +154,24 @@ public class CourseHistoryActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(CourseHistoryActivity.this,"获取课程历史失败,请稍后再试!",
+                        Toast.makeText(CourseHistoryActivity.this, "获取课程历史失败,请稍后再试!",
                                 Toast.LENGTH_SHORT).show();
                         mSwipe.setRefreshing(false);
                         mProgressBar.setVisibility(View.GONE);
                     }
 
                     @Override
-                    public void onNext(CourseHistoryEntity courseHistoryEntity) {
-                        if (courseHistoryEntity.isError()) {
+                    public void onNext(courseShowEntity courseShowEntity) {
+                        if (courseShowEntity.isError()) {
                             Toast.makeText(CourseHistoryActivity.this, "Error: " +
-                                            courseHistoryEntity.getMsg(),
+                                            courseShowEntity.getMsg(),
                                     Toast.LENGTH_SHORT).show();
 
                         } else {
-                            if (courseHistoryEntity.getData())
+                            if (courseShowEntity.getData() == null || courseShowEntity.getData().size() == 0) {
+                                mBeanList = new ArrayList<courseShowEntity.DataBean>();
+                            }
+                            adapter.setData(courseShowEntity.getData());
                         }
                     }
                 });

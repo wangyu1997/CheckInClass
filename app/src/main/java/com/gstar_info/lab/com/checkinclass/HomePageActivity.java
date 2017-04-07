@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 
 import com.gstar_info.lab.com.checkinclass.Api.API;
+import com.gstar_info.lab.com.checkinclass.Dialog.JoinCourseDialog;
 import com.gstar_info.lab.com.checkinclass.adapter.ListCourseItemAdapter;
 import com.gstar_info.lab.com.checkinclass.model.courseShowEntity;
 import com.gstar_info.lab.com.checkinclass.utils.AppManager;
@@ -112,12 +113,14 @@ public class HomePageActivity extends AppCompatActivity {
 
             @Override
             public void onItemLongClick(View view, int position) {
+
+                //TODO  加入课程
                 String courseid = datas.get(position - 1).getId();
-                Intent intent = new Intent(HomePageActivity.this, CourseDetailActivity.class);
-                Toast.makeText(HomePageActivity.this, " " + courseid, Toast.LENGTH_SHORT)
-                        .show();
-                intent.putExtra("courseid", courseid);
-                startActivity(intent);
+                String courseName = datas.get(position-1).getC_name();
+                String teacherHead = datas.get(position-1).getHeader();
+                JoinCourseDialog.newInstance(R.mipmap.zuoye,
+                        "添加课程", courseid,courseName,teacherHead)
+                        .show(getFragmentManager(), JoinCourseDialog.TAG);
             }
         });
         courseList.setAdapter(adapter);

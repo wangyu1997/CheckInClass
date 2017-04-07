@@ -2,7 +2,6 @@ package com.gstar_info.lab.com.checkinclass.Api;
 
 import com.gstar_info.lab.com.checkinclass.model.AcademysEntity;
 import com.gstar_info.lab.com.checkinclass.model.ArrayEntity;
-import com.gstar_info.lab.com.checkinclass.model.CourseHistoryEntity;
 import com.gstar_info.lab.com.checkinclass.model.CourseinfoEntity;
 import com.gstar_info.lab.com.checkinclass.model.LoginEntity;
 import com.gstar_info.lab.com.checkinclass.model.MajorEntity;
@@ -125,7 +124,12 @@ public interface API {
                                         @Field("action") String action);
 
     //学生课程历史
-    @POST("student/my")
-    Observable<CourseHistoryEntity> getCourseHistory();
-    
+    @POST("student/my.php")
+    Observable<courseShowEntity> getCourseHistory();
+
+    //加入课程
+    @FormUrlEncoded
+    @POST("student/join.php")
+    Observable<ArrayEntity> joinCourse(@Field("cid") int cid);
+
 }
