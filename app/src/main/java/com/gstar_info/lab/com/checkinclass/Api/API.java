@@ -2,6 +2,7 @@ package com.gstar_info.lab.com.checkinclass.Api;
 
 import com.gstar_info.lab.com.checkinclass.model.AcademysEntity;
 import com.gstar_info.lab.com.checkinclass.model.ArrayEntity;
+import com.gstar_info.lab.com.checkinclass.model.CourseHistoryEntity;
 import com.gstar_info.lab.com.checkinclass.model.CourseinfoEntity;
 import com.gstar_info.lab.com.checkinclass.model.LoginEntity;
 import com.gstar_info.lab.com.checkinclass.model.MajorEntity;
@@ -123,8 +124,8 @@ public interface API {
                                         @Field("bssid") String bssid,
                                         @Field("action") String action);
 
-//    //学生课程历史
-//    @FormUrlEncoded
-//    @POST("student/my")
-//    Observable
+    //学生课程历史
+    @POST("student/my")
+    Observable<CourseHistoryEntity> getCourseHistory();
+    
 }
