@@ -292,11 +292,6 @@ public class CourseDetailActivity extends AppCompatActivity {
         mTeacherName.setText(bean.getTeacher());
         mTvCoursename.setText(bean.getC_name());
         String teacherHead = bean.getHeader();
-        if (isMine) {
-            signLayout.setVisibility(View.VISIBLE);
-        } else {
-            signLayout.setVisibility(View.GONE);
-        }
         if (teacherHead != null) {
             mTeacherHead.setImageURI(Uri.parse(teacherHead));
 
@@ -453,7 +448,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                                     }
                                     mSwipe.setRefreshing(true);
                                     mProgressBar.setVisibility(View.VISIBLE);
-                                    getCourseDetail(courseid);
+                                    check(courseid);
                                 }
                             }
 
