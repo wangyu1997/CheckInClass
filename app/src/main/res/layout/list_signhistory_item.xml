@@ -3,7 +3,7 @@
               xmlns:fresco="http://schemas.android.com/apk/res-auto"
               android:id="@+id/itemView"
               android:layout_width="match_parent"
-              android:layout_height="90dp"
+              android:layout_height="80dp"
               android:background="?android:attr/selectableItemBackground"
               android:clickable="true"
               android:focusable="true"
@@ -11,13 +11,12 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/img_stuhead"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginLeft="16dp"
-        fresco:placeholderImage="@mipmap/placeholder_stuhead"
-        fresco:roundAsCircle="true"
-        />
+        android:src="@mipmap/placeholder_stuhead"
+        fresco:roundAsCircle="true"/>
 
     <TextView
         android:id="@+id/tv_stuname"
@@ -26,7 +25,7 @@
         android:layout_marginLeft="12dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="俺的发的"
+        android:text="俺发的"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"/>
@@ -40,7 +39,7 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="16dp"
         android:gravity="end"
-        android:text="为签到"
+        android:text="未签到"
         android:textAlignment="viewEnd"/>
 
 

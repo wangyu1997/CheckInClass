@@ -132,4 +132,9 @@ public interface API {
     @POST("student/join.php")
     Observable<ArrayEntity> joinCourse(@Field("cid") int cid);
 
+    //退出课程
+    @FormUrlEncoded
+    @POST("student/out.php")
+    Observable<ArrayEntity> quitCourse(@Field("cid") int cid);
+
 }

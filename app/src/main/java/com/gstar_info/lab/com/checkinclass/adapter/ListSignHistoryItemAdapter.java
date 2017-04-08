@@ -35,6 +35,7 @@ public class ListSignHistoryItemAdapter extends RecyclerView.Adapter<RecyclerVie
     private LayoutInflater layoutInflater;
     private static final int dataType = 45;
     private static final int footType = 908;
+    private static final int headType = 310;
     public FootTextInterFace interFace;
     private RecyclerOnItemClickListener mItemClickListener;
 
@@ -61,11 +62,12 @@ public class ListSignHistoryItemAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemViewType(int position) {
-        if (position == objects.size() + 1)
+        if (position==0){
+            return headType;
+        }else if (position == objects.size() + 1)
             return footType;
-        if (position > 0)
+        else
             return dataType;
-        return 0;
     }
 
     @Override
@@ -80,7 +82,7 @@ public class ListSignHistoryItemAdapter extends RecyclerView.Adapter<RecyclerVie
             holder = new FootViewHolder(LayoutInflater.from(context).inflate(R.layout.footview, parent, false));
             return holder;
         } else
-            return new EmptyHolder(LayoutInflater.from(context).inflate(R.layout.empty_item, null, false));
+            return new EmptyHolder(LayoutInflater.from(context).inflate(R.layout.empty_item, parent, false));
 
     }
 
@@ -90,7 +92,6 @@ public class ListSignHistoryItemAdapter extends RecyclerView.Adapter<RecyclerVie
 
         } else if (position != objects.size() + 1) {
             DataBean object = objects.get(position - 1);
-//            String id = object.getId();//课程ID
             String headUrl = null;
             if (object.getHeader() != null) {
                 headUrl = object.getHeader().toString();
@@ -145,7 +146,7 @@ public class ListSignHistoryItemAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        return objects.size() + 1;
+        return objects.size() + 2;
     }
 
 
