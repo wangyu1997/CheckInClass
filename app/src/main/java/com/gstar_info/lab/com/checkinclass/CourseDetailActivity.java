@@ -14,6 +14,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,8 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.gstar_info.lab.com.checkinclass.Api.API;
+import com.gstar_info.lab.com.checkinclass.PopUpWindow.Action_PopUp;
+import com.gstar_info.lab.com.checkinclass.PopUpWindow.Comfirm_PopUp;
 import com.gstar_info.lab.com.checkinclass.model.ArrayEntity;
 import com.gstar_info.lab.com.checkinclass.model.CourseinfoEntity;
 import com.gstar_info.lab.com.checkinclass.model.ObjEntity;
@@ -34,10 +37,14 @@ import com.gstar_info.lab.com.checkinclass.model.SignHistoryEntity;
 import com.gstar_info.lab.com.checkinclass.utils.AppManager;
 import com.gstar_info.lab.com.checkinclass.utils.HttpControl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Retrofit;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -48,6 +55,7 @@ public class CourseDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "CourseDetailActivity";
     private static final int REFRESHVIEW = 0x005;
+    private CourseinfoEntity.DataBean bean;
 
     @BindView(R.id.tv_coursename)
     TextView mTvCoursename;
@@ -103,6 +111,9 @@ public class CourseDetailActivity extends AppCompatActivity {
     private int number = -1;
     private String ssid;
     private String bssid;
+    private Action_PopUp action_popUp;
+    private Comfirm_PopUp comfirm_popUp;
+    private Map<String, Object> map;
 
 
     @Override
@@ -148,7 +159,6 @@ public class CourseDetailActivity extends AppCompatActivity {
             public void onRefresh() {
                 // TODO Auto-generated method stub
                 Toast.makeText(CourseDetailActivity.this, "正在加载中，请稍后...", Toast.LENGTH_SHORT).show();
-                getWifi();
                 check(courseid);
             }
         });
@@ -176,7 +186,8 @@ public class CourseDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_action) {
-            Toast.makeText(this, "功能键", Toast.LENGTH_SHORT).show();
+            action_popUp = new Action_PopUp(isMine, CourseDetailActivity.this, new Pop_onclick());
+            action_popUp.showAtLocation(findViewById(R.id.course_info), Gravity.BOTTOM, 0, 0);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -282,7 +293,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     };
 
     private void freshView(CourseinfoEntity courseinfoEntity) {
-        CourseinfoEntity.DataBean bean = courseinfoEntity.getData();
+        bean = courseinfoEntity.getData();
         mTvWifi.setText(bean.getWifi());
         mTvGpa.setText(bean.getGpa());
         mTeacherName.setText(bean.getTeacher());
@@ -367,9 +378,101 @@ public class CourseDetailActivity extends AppCompatActivity {
         }
     }
 
+
+    public class Pop_onclick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.join_btn:
+                    if (bean != null) {
+                        joinOrQuitCourse();
+                    }
+                    action_popUp.dismiss();
+                    break;
+                case R.id.quit_btn:
+                    action_popUp.dismiss();
+                    comfirm_popUp = new Comfirm_PopUp(CourseDetailActivity.this, new Pop_onclick());
+                    comfirm_popUp.showAtLocation(findViewById(R.id.course_info), Gravity.BOTTOM, 0, 0);
+                    break;
+                case R.id.comfirm_btn:
+                    joinOrQuitCourse();
+                    comfirm_popUp.dismiss();
+                    break;
+            }
+        }
+
+    }
+
+
+    private void joinOrQuitCourse() {
+        //TODO INT CID
+        if (courseid != -1) {
+            API api = HttpControl.getInstance().getRetrofit()
+                    .create(API.class);
+            Observable<ArrayEntity> observable;
+            if (isMine) {
+                observable =
+                        api.quitCourse(courseid);
+            } else {
+                observable =
+                        api.joinCourse(courseid);
+            }
+
+
+            observable.subscribeOn(io())
+                    .unsubscribeOn(io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<ArrayEntity>() {
+                        @Override
+                        public void onCompleted() {
+
+                            mProgressBar.setVisibility(View.GONE);
+
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(CourseDetailActivity.this, "Error" + e.getMessage() +
+                                    "请稍后再试 :(" +
+                                    "", Toast.LENGTH_SHORT).show();
+                            mProgressBar.setVisibility(View.GONE);
+
+                        }
+
+                        @Override
+                        public void onNext(ArrayEntity arrayEntity) {
+                            if (arrayEntity.isError()) {
+                                Toast.makeText(CourseDetailActivity.this, arrayEntity.getMsg(),
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (arrayEntity.getMsg().equals("ok")) {
+                                    if (isMine) {
+                                        Toast.makeText(CourseDetailActivity.this, "退出课程成功",
+                                                Toast.LENGTH_SHORT).show();
+
+                                    } else {
+                                        Toast.makeText(CourseDetailActivity.this, "加入课程成功",
+                                                Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    mSwipe.setRefreshing(true);
+                                    mProgressBar.setVisibility(View.VISIBLE);
+                                    getCourseDetail(courseid);
+
+                                }
+                            }
+
+                        }
+                    });
+        }
+    }
+
+
     private void sign() {
         String action;
-        if (mBtnSign.getText().toString().equals("签到 ")) {
+        if (mBtnSign.getText().toString().equals("签到")) {
             action = "signin";
         } else {
             action = "signout";
@@ -417,6 +520,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     private void getWifi() {
         Toast.makeText(this, "正在搜寻wifi,请稍后", Toast.LENGTH_SHORT).show();
