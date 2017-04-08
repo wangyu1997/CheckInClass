@@ -7,12 +7,10 @@ import java.util.List;
  */
 
 public class SignHistoryEntity {
-
-
     /**
      * error : false
      * msg : ok
-     * data : [{"id":"2","sid":"58e3a5177f994","sname":"王宇","header":null,"signState":"2"}]
+     * data : [{"id":"1","sid":"58e4fe199b42d","sname":"人不如故","mname":"计算机科学与技术","header":"http://www.baidu.com","signState":"2"}]
      */
 
     private boolean error;
@@ -45,17 +43,19 @@ public class SignHistoryEntity {
 
     public static class DataBean {
         /**
-         * id : 2
-         * sid : 58e3a5177f994
-         * sname : 王宇
-         * header : null
+         * id : 1
+         * sid : 58e4fe199b42d
+         * sname : 人不如故
+         * mname : 计算机科学与技术
+         * header : http://www.baidu.com
          * signState : 2
          */
 
         private String id;
         private String sid;
         private String sname;
-        private Object header;
+        private String mname;
+        private String header;
         private String signState;
 
         public String getId() {
@@ -82,11 +82,19 @@ public class SignHistoryEntity {
             this.sname = sname;
         }
 
-        public Object getHeader() {
+        public String getMname() {
+            return mname;
+        }
+
+        public void setMname(String mname) {
+            this.mname = mname;
+        }
+
+        public String getHeader() {
             return header;
         }
 
-        public void setHeader(Object header) {
+        public void setHeader(String header) {
             this.header = header;
         }
 

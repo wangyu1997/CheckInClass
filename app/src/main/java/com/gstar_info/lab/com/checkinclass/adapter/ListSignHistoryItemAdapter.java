@@ -1,22 +1,17 @@
 package com.gstar_info.lab.com.checkinclass.adapter;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.gstar_info.lab.com.checkinclass.AcademySelectActivity;
 import com.gstar_info.lab.com.checkinclass.FootTextInterFace;
-import com.gstar_info.lab.com.checkinclass.HomePageActivity;
 import com.gstar_info.lab.com.checkinclass.R;
 import com.gstar_info.lab.com.checkinclass.RecyclerOnItemClickListener;
 import com.gstar_info.lab.com.checkinclass.model.SignHistoryEntity.DataBean;
@@ -62,9 +57,9 @@ public class ListSignHistoryItemAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemViewType(int position) {
-        if (position==0){
+        if (position == 0) {
             return headType;
-        }else if (position == objects.size() + 1)
+        } else if (position == objects.size() + 1)
             return footType;
         else
             return dataType;
@@ -110,6 +105,7 @@ public class ListSignHistoryItemAdapter extends RecyclerView.Adapter<RecyclerVie
                     Uri imgUri = Uri.parse(headUrl);
                     ((ViewHolder) holder).imgStuhead.setImageURI(imgUri);
                 }
+                ((ViewHolder) holder).tvMajor.setText(object.getMname());
                 ((ViewHolder) holder).tvStuname.setText(stuname);
                 switch (signstate) {
                     case 0:
@@ -178,6 +174,8 @@ public class ListSignHistoryItemAdapter extends RecyclerView.Adapter<RecyclerVie
         TextView tvSignstate;
         @BindView(R.id.itemView)
         LinearLayout itemmView;
+        @BindView(R.id.tv_major)
+        TextView tvMajor;
 
         ViewHolder(View view) {
             super(view);

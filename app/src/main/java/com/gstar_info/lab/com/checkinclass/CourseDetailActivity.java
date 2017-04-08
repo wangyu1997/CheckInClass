@@ -169,7 +169,6 @@ public class CourseDetailActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mSwipe.setRefreshing(true);
-        getWifi();
         check(courseid);
         Toast.makeText(this, "正在加载中，请稍后...", Toast.LENGTH_SHORT).show();
     }
@@ -196,7 +195,6 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         Retrofit retrofit = HttpControl.getInstance().getRetrofit();
         API api = retrofit.create(API.class);
-        Log.d(TAG, "check: " + cid);
         api.checkCourse(cid)
                 .subscribeOn(io())
                 .unsubscribeOn(io())
@@ -205,11 +203,6 @@ public class CourseDetailActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted() {
                         //TODO 显示签到button
-                        if (isMine) {
-                            signLayout.setVisibility(View.VISIBLE);
-                        } else {
-                            signLayout.setVisibility(View.GONE);
-                        }
                     }
 
                     @Override
@@ -299,15 +292,20 @@ public class CourseDetailActivity extends AppCompatActivity {
         mTeacherName.setText(bean.getTeacher());
         mTvCoursename.setText(bean.getC_name());
         String teacherHead = bean.getHeader();
+        if (isMine) {
+            signLayout.setVisibility(View.VISIBLE);
+        } else {
+            signLayout.setVisibility(View.GONE);
+        }
         if (teacherHead != null) {
             mTeacherHead.setImageURI(Uri.parse(teacherHead));
 
         }
-        mTvCreate.setText(bean.getCreateTime());
+        mTvCreate.setText(bean.getCreateTime().split(" ")[0]);
         mTvNum.setText(bean.getNumber());
         mCourseContent.setText(bean.getContent());
         mTvPlace.setText(bean.getPlace());
-        mTvTime.setText(bean.getTime().split(" ")[0]);
+        mTvTime.setText(bean.getTime());
         mTvAcademy.setText(bean.getA_name().substring(0, bean.getA_name().indexOf("学院")));
         String stuheads = bean.getHeader_con();
         if (stuheads == null || stuheads.isEmpty()) {
@@ -345,8 +343,6 @@ public class CourseDetailActivity extends AppCompatActivity {
         }
         mTvState.setText(course_state);
         flag = Integer.parseInt(bean.getSignFlag());
-
-
     }
 
 
@@ -372,7 +368,8 @@ public class CourseDetailActivity extends AppCompatActivity {
                     Toast.makeText(this, "已经过了签到时间 :("
                             , Toast.LENGTH_SHORT).show();
                 } else if (flag == 1) {
-                    sign();
+                    if (getWifi())
+                        sign();
                 }
                 break;
         }
@@ -426,10 +423,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                     .subscribe(new Subscriber<ArrayEntity>() {
                         @Override
                         public void onCompleted() {
-
                             mProgressBar.setVisibility(View.GONE);
-
-
                         }
 
                         @Override
@@ -460,7 +454,6 @@ public class CourseDetailActivity extends AppCompatActivity {
                                     mSwipe.setRefreshing(true);
                                     mProgressBar.setVisibility(View.VISIBLE);
                                     getCourseDetail(courseid);
-
                                 }
                             }
 
@@ -522,23 +515,24 @@ public class CourseDetailActivity extends AppCompatActivity {
     }
 
 
-    private void getWifi() {
+    private boolean getWifi() {
         Toast.makeText(this, "正在搜寻wifi,请稍后", Toast.LENGTH_SHORT).show();
         mProgressBar.setVisibility(View.VISIBLE);
         mWifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         WifiInfo info = mWifiManager.getConnectionInfo();
         if (mWifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLING) {
             Toast.makeText(this, "请打开wifi并连接后再点击", Toast.LENGTH_SHORT).show();
+            return false;
         } else {
             if (info.getNetworkId() == -1) {
                 Toast.makeText(this, "请连接wifi后再点击", Toast.LENGTH_SHORT).show();
+                return false;
             } else {
                 ssid = info.getSSID();
                 bssid = info.getBSSID();
-//                mTvWifi.setText(ssid);
             }
         }
         mProgressBar.setVisibility(View.GONE);
-
+        return true;
     }
 }

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CheckInClass.iml" filepath="$PROJECT_DIR$/CheckInClass.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CheckInClass.iml" filepath="$PROJECT_DIR$/CheckInClass.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/roundedimageview/roundedimageview.iml" filepath="$PROJECT_DIR$/roundedimageview/roundedimageview.iml" />
     </modules>
